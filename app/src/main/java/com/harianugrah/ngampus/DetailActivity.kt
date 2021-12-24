@@ -1,5 +1,7 @@
 package com.harianugrah.ngampus
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -57,11 +59,21 @@ class DetailActivity : AppCompatActivity() {
         val btnEdit = findViewById<Button>(R.id.btnEdit);
 
         btnDelete.setOnClickListener {
-            AppDatabase.getInstance(this).userDao().delete(detailUser);
 
-            val intent = Intent(this, ListActivity::class.java);
-            finish();
-            startActivity(intent);
+            AlertDialog.Builder(this)
+                .setTitle("Hapus")
+                .setMessage("Yakin menghapus teman??")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes,
+                    DialogInterface.OnClickListener { dialog, whichButton ->
+                        AppDatabase.getInstance(this).userDao().delete(detailUser);
+
+                        val intent = Intent(this, ListActivity::class.java);
+                        finish();
+                        startActivity(intent);
+                    })
+                .setNegativeButton(android.R.string.no, null).show()
+
         }
 
         btnEdit.setOnClickListener {
